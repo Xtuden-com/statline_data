@@ -22,14 +22,12 @@ def query_states_daily():
 
 def insertDF(df):
     client = secretmanager.SecretManagerServiceClient()
-    project_name = ""
-    db_user = client.access_secret_version(f"projects/{project_name}/secrets/db_user/versions/latest")
-    db_password = client.access_secret_version(f"projects/{project_name}/secrets/db_password/versions/latest")
-    connection_name = client.access_secret_version(f"projects/{project_name}/secrets/connection_name/versions/latest")
+    project_number = os.environ['project_number']
+    db_user = os.environ['db_user']
+    connection_name = os.environ['connection_name']
+    db_password = f"projects/{project_number}/secrets/db_password/versions/latest"
     db_name = 'nytimes'
-    print('Create Engine')
-    engine = create_engine(f"mysql+mysqldb://{db_user}@/{db_name}?unix_socket=/cloudsql/{connection_name}")
-    print('Created Engine')
+    engine = create_engine(f"mysql+pymysql://{db_user}:{db_password}@/{db_name}?unix_socket=/cloudsql/{connection_name}")
     df.to_sql('temp_table', engine, if_exists='replace')
     
 def main(request):
