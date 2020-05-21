@@ -1,5 +1,5 @@
 import pandas as pd 
-from sqlalchemy import create_engine
+import sqlalchemy
 from google.cloud import secretmanager
 import os 
 
@@ -25,10 +25,21 @@ def insertDF(df):
     project_number = os.environ['project_number']
     db_user = os.environ['db_user']
     connection_name = os.environ['connection_name']
-    db_password = f"projects/{project_number}/secrets/db_password/versions/latest"
+    password_link = f"projects/{project_number}/secrets/db_password/versions/latest"
+    response = client.access_secret_version(password_link)
+    db_password = response.payload.data.decode('UTF-8')
     db_name = 'nytimes'
-    engine = create_engine(f"mysql+pymysql://{db_user}:{db_password}@/{db_name}?unix_socket=/cloudsql/{connection_name}")
-    df.to_sql('temp_table', engine, if_exists='replace')
+    engine = sqlalchemy.create_engine(f"mysql+pymysql://{db_user}:{db_password}@/{db_name}?unix_socket=/cloudsql/{connection_name}")
+    df.to_sql('temp_table', engine, if_exists='replace', dtype={'state':sqlalchemy.types.VARCHAR(length=255)})    
+    with engine.connect() as con:
+        con.execute('ALTER TABLE `temp_table` ADD PRIMARY KEY (`date`,`state`)')
+    sql = """
+    INSERT INTO states_table
+    SELECT date, state, new_cases FROM temp_table
+    ON DUPLICATE KEY UPDATE states_table.new_cases = temp_table.new_cases
+    """
+    with engine.begin() as conn:
+        conn.execute(sql)
     
 def main(request):
     df = query_states_daily()
