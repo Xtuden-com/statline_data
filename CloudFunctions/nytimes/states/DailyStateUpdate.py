@@ -12,12 +12,10 @@ def query_states_daily():
     # grab only if the cases & deaths greater than 0
     subquery1df = statesdf[statesdf.cases + statesdf.deaths > 0][['state','fips','cases','shift_date']]
     # merge the two on shift_date and regular date 
-    merged = statesdf.merge(subquery1df,left_on=['date','fips'],right_on=['shift_date','fips'],how='inner')
-    merged = merged.sort_values(by='date',ascending=True)
+    merged = statesdf.merge(subquery1df,left_on=['date','fips','state'],right_on=['shift_date','fips','state'],how='inner')
+    print(merged.head(10))
     merged['new_cases'] = merged['cases_x'] - merged['cases_y']
-    result = merged[['date','state_x','new_cases']].sort_values(by=['state_x','date'],ascending=[True,True])
-    d = {'date': 'date', 'state_x': 'state', 'new_cases':'new_cases'}
-    result = result.rename(columns=d)
+    result = merged[['date','state','new_cases']].sort_values(by=['state','date'],ascending=[True,True])
     return result
 
 def insertDF(df):
@@ -31,8 +29,6 @@ def insertDF(df):
     db_name = 'nytimes'
     engine = sqlalchemy.create_engine(f"mysql+pymysql://{db_user}:{db_password}@/{db_name}?unix_socket=/cloudsql/{connection_name}")
     df.to_sql('temp_table', engine, if_exists='replace', dtype={'state':sqlalchemy.types.VARCHAR(length=255)})    
-    with engine.connect() as con:
-        con.execute('ALTER TABLE `temp_table` ADD PRIMARY KEY (`date`,`state`)')
     sql = """
     INSERT INTO states_table
     SELECT date, state, new_cases FROM temp_table
