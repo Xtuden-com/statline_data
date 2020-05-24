@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="states_table")
-@IdClass(States.IdClass.class)
-public class States {
+@IdClass(CovidStates.IdClass.class)
+public class CovidStates {
     @Id
     private Date date;
     @Id

@@ -1,6 +1,6 @@
 package com.statline.api.databackend.controller;
 
-import com.statline.api.databackend.dao.StatesRepository;
+import com.statline.api.databackend.dao.CovidStatesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,9 +10,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/states")
-public class StatesController {
+public class CovidStatesController {
     @Autowired
-    private StatesRepository states;
+    private CovidStatesRepository states;
     @GetMapping(path="/latest")
     List<Object[]> getLatest(){
         return states.getLatest();
