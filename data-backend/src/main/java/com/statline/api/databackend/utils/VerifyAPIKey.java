@@ -21,7 +21,7 @@ import java.util.Set;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class VerifyAPIKey implements Filter {
-    public Set<String> getGoogleKeys() throws Exception{
+    public static Set<String> getGoogleKeys() throws Exception{
         Set<String> keys;
         try (SecretManagerServiceClient client = SecretManagerServiceClient.create()) {
             SecretVersionName secretVersionName = SecretVersionName.of(System.getenv("GOOGLE_CLOUD_PROJECT"),
