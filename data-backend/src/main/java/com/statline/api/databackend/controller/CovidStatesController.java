@@ -17,4 +17,8 @@ public class CovidStatesController {
     List<Object[]> getLatest(){
         return states.getLatest();
     }
+    @GetMapping(path="totalNewCases")
+    long getTotal(){
+        return states.totalNewCases();
+    }
 }

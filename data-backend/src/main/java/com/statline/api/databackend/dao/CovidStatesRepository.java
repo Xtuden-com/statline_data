@@ -9,4 +9,6 @@ import java.util.List;
 public interface CovidStatesRepository extends CrudRepository<CovidStates,Integer> {
     @Query(value = "SELECT state,new_cases FROM states_table WHERE date=(SELECT MAX(date) FROM states_table)",nativeQuery = true)
     List<Object[]> getLatest();
+    @Query(value = "SELECT SUM(new_cases) FROM states_table WHERE date=(SELECT MAX(date) FROM states_table)", nativeQuery = true)
+    long totalNewCases();
 }
