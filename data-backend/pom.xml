@@ -82,6 +82,19 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>2.3.0</version>
+				<configuration>
+					<from>
+						<image>openjdk:8</image>
+					</from>
+					<to>
+						<image>gcr.io/statline/data-backend</image>
+					</to>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
