@@ -12,7 +12,7 @@ Note you must assign GOOGLE_APPLICATION_CREDENTIALS in the environment
 
 ### Containerization
 #### ON GCP:
-...
+mvn compile jib:build
 
 #### NOT ON GCP:
 Dockerfile will build the containerized jar if you plan on deploying locally or not on gcp.
