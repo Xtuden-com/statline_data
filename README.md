@@ -12,12 +12,13 @@ Note you must assign GOOGLE_APPLICATION_CREDENTIALS in the environment
 
 ### Containerization
 #### ON GCP:
-...
+mvn compile jib:build
 
 #### NOT ON GCP:
 Dockerfile will build the containerized jar if you plan on deploying locally or not on gcp.
 You must use docker-swarm since we use secrets.
+
 docker secret create ${GOOGLE_APPLICATION_CREDENTIALS} gcp_auth
-Run
-`docker stack deploy --compose-file=docker-compose.yml staline`
+
+Run: `docker stack deploy --compose-file=docker-compose.yml staline`
 to deploy the container 
