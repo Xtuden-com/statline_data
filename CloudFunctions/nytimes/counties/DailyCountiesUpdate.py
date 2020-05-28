@@ -20,12 +20,12 @@ def query_counties_daily():
 def insertDF(df):
     client = secretmanager.SecretManagerServiceClient()
     project_number = os.environ['project_number']
-    db_user = os.environ['db_user']
+    db_user = os.environ['DB_USER']
     connection_name = os.environ['connection_name']
     password_link = f"projects/{project_number}/secrets/db_password/versions/latest"
     response = client.access_secret_version(password_link)
     db_password = response.payload.data.decode('UTF-8')
-    db_name = 'nytimes'
+    db_name = os.environ['DB_NAME']
     engine = sqlalchemy.create_engine(f"mysql+pymysql://{db_user}:{db_password}@/{db_name}?unix_socket=/cloudsql/{connection_name}")
     df.to_sql('county_temp_table', engine, if_exists='replace', dtype={'state':sqlalchemy.types.VARCHAR(length=255), 'county':sqlalchemy.types.VARCHAR(length=255)})
     sql = """
