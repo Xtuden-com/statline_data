@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name="states_table")
+@Table(name="covid_states")
 public class CovidStates {
     @EmbeddedId
     CovidStatesId id;

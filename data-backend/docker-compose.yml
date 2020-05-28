@@ -9,6 +9,7 @@ services:
         DB_USER: ${DB_USER}
         DB_PASSWORD: ${DB_PASSWORD}
         GOOGLE_CLOUD_PROJECT: ${GOOGLE_CLOUD_PROJECT}
+        DB_NAME: ${DB_NAME}
     secrets:
         - source: gcp_auth
 
