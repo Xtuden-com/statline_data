@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-secretmanager</artifactId>
-			<version>1.0.1</version>
+			<version>1.2.3</version>
 		</dependency>
 
 		<dependency>
@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
-			<version>1.0.0.RELEASE</version>
+			<version>1.1.5.RELEASE</version>
 		</dependency>
 
 		<dependency>
